@@ -24,7 +24,9 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard> {
   // current tetris piece
-  Piece currentPiece = Piece(type: Tetromino.T);
+  Piece currentPiece = Piece(type: Tetromino.S);
+  int currentScore = 0;
+  bool gameOver = false;
 
   @override
   void initState() {
@@ -45,13 +47,65 @@ class _GameBoardState extends State<GameBoard> {
   void gameLoop(Duration frameRate) {
     Timer.periodic(frameRate, (timer) {
       setState(() {
+        // clear lines
+        clearLines();
+
         // check landing
         checkLanding();
+
+        // check if game is over
+        if (gameOver == true) {
+          timer.cancel();
+          showGameOverDialog();
+        }
 
         // move current piece down
         currentPiece.movePiece(Direction.down);
       });
     });
+  }
+
+  // game over message
+  void showGameOverDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Game Over"),
+        content: Text("Your score is: $currentScore"),
+        actions: [
+          TextButton(
+              onPressed: () {
+                // reset the game
+
+                resetGame();
+
+                Navigator.pop(context);
+              },
+              child: Text("Play Again"))
+        ],
+      ),
+    );
+  }
+
+  // reset game
+  void resetGame() {
+    // clear the board
+    gameBoard = List.generate(
+      columnLenght,
+      (i) => List.generate(
+        rowLenght,
+        (j) => null,
+      ),
+    );
+
+    gameOver = false;
+    currentScore = 0;
+
+    // form new piece
+    formNewPiece();
+
+    // start game
+    startGame();
   }
 
   // check for a collision in a future position
@@ -112,6 +166,10 @@ class _GameBoardState extends State<GameBoard> {
 
     currentPiece = Piece(type: randomType);
     currentPiece.initializePiece();
+
+    if (isGameOver()) {
+      gameOver = true;
+    }
   }
 
   // move left
@@ -135,7 +193,55 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   // rotate piece
-  void rotatePiece() {}
+  void rotatePiece() {
+    setState(() {
+      currentPiece.rotatePiece();
+    });
+  }
+
+  // clear lines
+  void clearLines() {
+    // check if the row is full
+    for (var row = columnLenght - 1; row >= 0; row--) {
+      bool rowIsFull = true;
+      for (var column = 0; column < rowLenght; column++) {
+        if (gameBoard[row][column] == null) {
+          rowIsFull = false;
+          break;
+        }
+      }
+
+      // if the row is full clear the row and shift rows down
+      if (rowIsFull) {
+        for (var r = row; r > 0; r--) {
+          gameBoard[r] = List.from(gameBoard[r - 1]);
+        }
+
+        // set the top row to empty
+        gameBoard[0] = List.generate(row, (index) => null);
+
+        //increase score
+        increaseScore();
+      }
+    }
+  }
+
+  // increase score
+  void increaseScore() {
+    currentScore++;
+  }
+
+  // game over
+  bool isGameOver() {
+    // check if any column in the top row are filled
+    for (var column = 0; column < rowLenght; column++) {
+      if (gameBoard[0][column] != null) {
+        return true;
+      }
+    }
+    // if the top row is empty, the game is not over
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,24 +264,31 @@ class _GameBoardState extends State<GameBoard> {
                 if (currentPiece.position.contains(index)) {
                   return Pixel(
                     color: currentPiece.color,
-                    child: index.toString(),
                   );
                 }
                 // landed pieces
                 else if (gameBoard[row][column] != null) {
                   final Tetromino? tetrominoType = gameBoard[row][column];
                   return Pixel(
-                      color: tetrominoColors[tetrominoType], child: "");
+                      color: tetrominoColors[tetrominoType]);
                 }
 
                 // blank pixel
                 else {
                   return Pixel(
                     color: Colors.grey[900],
-                    child: index.toString(),
                   );
                 }
               },
+            ),
+          ),
+
+          // score
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text(
+              "Score: $currentScore",
+              style: const TextStyle(color: Colors.white),
             ),
           ),
 

@@ -1,6 +1,6 @@
-// grid dimensions
 import 'package:flutter/material.dart';
 
+// grid dimensions
 int rowLenght = 10;
 int columnLenght = 15;
 
