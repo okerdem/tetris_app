@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'board.dart';
+import 'package:flutter_tetris_app/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GameBoard(),
+      home: Menu(),
     );
   }
 }

@@ -269,8 +269,7 @@ class _GameBoardState extends State<GameBoard> {
                 // landed pieces
                 else if (gameBoard[row][column] != null) {
                   final Tetromino? tetrominoType = gameBoard[row][column];
-                  return Pixel(
-                      color: tetrominoColors[tetrominoType]);
+                  return Pixel(color: tetrominoColors[tetrominoType]);
                 }
 
                 // blank pixel
@@ -294,7 +293,7 @@ class _GameBoardState extends State<GameBoard> {
 
           // game controls
           Padding(
-            padding: const EdgeInsets.only(bottom: 50.0),
+            padding: const EdgeInsets.only(bottom: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -319,6 +318,19 @@ class _GameBoardState extends State<GameBoard> {
                   icon: const Icon(Icons.arrow_forward_ios),
                 ),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+                resetGame();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[800],
+              ),
+              child: const Text("Menu"),
             ),
           )
         ],
