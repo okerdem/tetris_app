@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tetris_app/board.dart';
+import 'package:flutter_tetris_app/main.dart';
 
-class Menu extends StatelessWidget {
+class Menu extends StatefulWidget {
   const Menu({super.key});
+
+  @override
+  State<Menu> createState() => _MenuState();
+}
+
+class _MenuState extends State<Menu> {
+  bool _darkTheme = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: Row(
           children: [
@@ -41,18 +49,18 @@ class Menu extends StatelessWidget {
             Expanded(
               child: IconButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return const GameBoard();
-                      },
-                    ),
-                  );
+                  setState(() {
+                    _darkTheme
+                        ? MyApp.of(context).changeTheme(ThemeMode.dark)
+                        : MyApp.of(context).changeTheme(ThemeMode.light);
+                    _darkTheme = !_darkTheme;
+                  });
                 },
-                color: Colors.grey,
+                color: _darkTheme ? Colors.grey[400] : Colors.yellow,
                 iconSize: 40,
-                icon: Icon(Icons.light_mode_outlined),
+                icon: _darkTheme
+                    ? const Icon(Icons.light_mode_outlined)
+                    : const Icon(Icons.light_mode),
               ),
             )
           ],

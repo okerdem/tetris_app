@@ -24,7 +24,7 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard> {
   // current tetris piece
-  Piece currentPiece = Piece(type: Tetromino.S);
+  Piece currentPiece = Piece(type: Tetromino.L);
   int currentScore = 0;
   bool gameOver = false;
 
@@ -37,6 +37,7 @@ class _GameBoardState extends State<GameBoard> {
   }
 
   void startGame() {
+    formNewPiece();
     currentPiece.initializePiece();
 
     // fps
@@ -228,7 +229,7 @@ class _GameBoardState extends State<GameBoard> {
 
   // increase score
   void increaseScore() {
-    currentScore++;
+    currentScore += 100;
   }
 
   // game over
@@ -246,7 +247,7 @@ class _GameBoardState extends State<GameBoard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Column(
         children: [
           Expanded(
@@ -275,7 +276,7 @@ class _GameBoardState extends State<GameBoard> {
                 // blank pixel
                 else {
                   return Pixel(
-                    color: Colors.grey[900],
+                    color: Theme.of(context).colorScheme.primary,
                   );
                 }
               },
@@ -300,21 +301,21 @@ class _GameBoardState extends State<GameBoard> {
                 // left
                 IconButton(
                   onPressed: moveLeft,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.secondary,
                   icon: const Icon(Icons.arrow_back_ios),
                 ),
 
                 // rotate
                 IconButton(
                   onPressed: rotatePiece,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.secondary,
                   icon: const Icon(Icons.rotate_right),
                 ),
 
                 // right
                 IconButton(
                   onPressed: moveRight,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.secondary,
                   icon: const Icon(Icons.arrow_forward_ios),
                 ),
               ],
@@ -328,7 +329,7 @@ class _GameBoardState extends State<GameBoard> {
                 resetGame();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[800],
+                backgroundColor: Theme.of(context).colorScheme.tertiary,
               ),
               child: const Text("Menu"),
             ),
