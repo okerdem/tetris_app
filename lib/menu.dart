@@ -17,52 +17,69 @@ class _MenuState extends State<Menu> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
-        child: Row(
+        child: Column(
           children: [
-            const Spacer(),
-            Expanded(
-              child: Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const GameBoard();
-                        },
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-                    backgroundColor: Colors.orange[800],
-                  ),
-                  child: const Text(
-                    "Play",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                    ),
+            const Expanded(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("lib/assets/tetris_layout_logo.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-            Expanded(
-              child: IconButton(
-                onPressed: () {
-                  setState(() {
-                    _darkTheme
-                        ? MyApp.of(context).changeTheme(ThemeMode.dark)
-                        : MyApp.of(context).changeTheme(ThemeMode.light);
-                    _darkTheme = !_darkTheme;
-                  });
-                },
-                color: _darkTheme ? Colors.grey[400] : Colors.yellow,
-                iconSize: 40,
-                icon: _darkTheme
-                    ? const Icon(Icons.light_mode_outlined)
-                    : const Icon(Icons.light_mode),
-              ),
-            )
+            Row(
+              children: [
+                const Spacer(),
+                Expanded(
+                  child: Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const GameBoard();
+                            },
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                        backgroundColor: Colors.orange[800],
+                      ),
+                      child: const Text(
+                        "Play",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _darkTheme
+                            ? MyApp.of(context).changeTheme(ThemeMode.dark)
+                            : MyApp.of(context).changeTheme(ThemeMode.light);
+                        _darkTheme = !_darkTheme;
+                      });
+                    },
+                    color: _darkTheme ? Colors.yellow : Colors.grey[400],
+                    iconSize: 40,
+                    icon: _darkTheme
+                        ? const Icon(Icons.light_mode)
+                        : const Icon(Icons.light_mode_outlined),
+                  ),
+                )
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.only(bottom: 300.0),
+            ),
           ],
         ),
       ),

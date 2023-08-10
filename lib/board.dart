@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
-
+import 'package:flutter_tetris_app/menu.dart';
+import 'package:hold_down_button/hold_down_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tetris_app/piece.dart';
 import 'package:flutter_tetris_app/pixel.dart';
@@ -71,7 +72,7 @@ class _GameBoardState extends State<GameBoard> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Game Over"),
+        title: const Text("Game Over"),
         content: Text("Your score is: $currentScore"),
         actions: [
           TextButton(
@@ -82,7 +83,27 @@ class _GameBoardState extends State<GameBoard> {
 
                 Navigator.pop(context);
               },
-              child: Text("Play Again"))
+              child: const Text(
+                "Play Again",
+                style: TextStyle(
+                  color: Colors.orange,
+                ),
+              )),
+          TextButton(
+            onPressed: () {
+              // reset game
+              resetGame();
+
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Menu",
+              style: TextStyle(
+                color: Colors.orange,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -189,6 +210,16 @@ class _GameBoardState extends State<GameBoard> {
     if (!checkCollision(Direction.right)) {
       setState(() {
         currentPiece.movePiece(Direction.right);
+      });
+    }
+  }
+
+  // move down
+  void moveDown() {
+    // make sure the move is valid before moving there
+    if (!checkCollision(Direction.down)) {
+      setState(() {
+        currentPiece.movePiece(Direction.down);
       });
     }
   }
@@ -312,6 +343,16 @@ class _GameBoardState extends State<GameBoard> {
                   icon: const Icon(Icons.rotate_right),
                 ),
 
+                // down
+                HoldDownButton(
+                  onHoldDown: () => moveDown(),
+                  child: IconButton(
+                    onPressed: moveDown,
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: const Icon(Icons.arrow_downward),
+                  ),
+                ),
+
                 // right
                 IconButton(
                   onPressed: moveRight,
@@ -323,15 +364,21 @@ class _GameBoardState extends State<GameBoard> {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-                resetGame();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-              ),
-              child: const Text("Menu"),
+            child: Row(
+              children: [
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    resetGame();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  child: const Text("Menu"),
+                ),
+                const Spacer(),
+              ],
             ),
           )
         ],
