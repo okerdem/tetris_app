@@ -16,70 +16,61 @@ class _MenuState extends State<Menu> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Center(
-        child: Column(
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("lib/assets/tetris_layout_logo.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Row(
           children: [
-            const Expanded(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("lib/assets/tetris_layout_logo.png"),
-                    fit: BoxFit.cover,
+            const Spacer(),
+            Expanded(
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const GameBoard();
+                        },
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.only(left: 50.0, right: 50.0),
+                    backgroundColor: Colors.orange[800],
+                    
+                  ),
+                  child: const Text(
+                    "Play",
+                    style: TextStyle(
+                      fontSize: 15.0,
+                    ),
                   ),
                 ),
               ),
             ),
-            Row(
-              children: [
-                const Spacer(),
-                Expanded(
-                  child: Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const GameBoard();
-                            },
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.only(left: 50.0, right: 50.0),
-                        backgroundColor: Colors.orange[800],
-                      ),
-                      child: const Text(
-                        "Play",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        _darkTheme
-                            ? MyApp.of(context).changeTheme(ThemeMode.dark)
-                            : MyApp.of(context).changeTheme(ThemeMode.light);
-                        _darkTheme = !_darkTheme;
-                      });
-                    },
-                    color: _darkTheme ? Colors.yellow : Colors.grey[400],
-                    iconSize: 40,
-                    icon: _darkTheme
-                        ? const Icon(Icons.light_mode)
-                        : const Icon(Icons.light_mode_outlined),
-                  ),
-                )
-              ],
-            ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 300.0),
-            ),
+            Expanded(
+              child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    _darkTheme
+                        ? MyApp.of(context).changeTheme(ThemeMode.dark)
+                        : MyApp.of(context).changeTheme(ThemeMode.light);
+                    _darkTheme = !_darkTheme;
+                  });
+                },
+                color: _darkTheme ? Colors.yellow : Colors.grey[400],
+                iconSize: 40,
+                icon: _darkTheme
+                    ? const Icon(Icons.light_mode)
+                    : const Icon(Icons.light_mode_outlined),
+              ),
+            )
           ],
         ),
       ),

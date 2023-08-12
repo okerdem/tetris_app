@@ -319,7 +319,7 @@ class _GameBoardState extends State<GameBoard> {
             padding: const EdgeInsets.all(20.0),
             child: Text(
               "Score: $currentScore",
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
             ),
           ),
 
@@ -330,10 +330,13 @@ class _GameBoardState extends State<GameBoard> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 // left
-                IconButton(
-                  onPressed: moveLeft,
-                  color: Theme.of(context).colorScheme.secondary,
-                  icon: const Icon(Icons.arrow_back_ios),
+                HoldDownButton(
+                  onHoldDown: () => moveLeft(),
+                  child: IconButton(
+                    onPressed: moveLeft,
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: const Icon(Icons.arrow_back_ios),
+                  ),
                 ),
 
                 // rotate
@@ -349,15 +352,19 @@ class _GameBoardState extends State<GameBoard> {
                   child: IconButton(
                     onPressed: moveDown,
                     color: Theme.of(context).colorScheme.secondary,
-                    icon: const Icon(Icons.arrow_downward),
+                    icon: const Icon(Icons.keyboard_arrow_down),
+                    iconSize: 30.0,
                   ),
                 ),
 
                 // right
-                IconButton(
-                  onPressed: moveRight,
-                  color: Theme.of(context).colorScheme.secondary,
-                  icon: const Icon(Icons.arrow_forward_ios),
+                HoldDownButton(
+                  onHoldDown: () => moveRight(),
+                  child: IconButton(
+                    onPressed: moveRight,
+                    color: Theme.of(context).colorScheme.secondary,
+                    icon: const Icon(Icons.arrow_forward_ios),
+                  ),
                 ),
               ],
             ),
